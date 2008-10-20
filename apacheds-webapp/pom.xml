@@ -39,6 +39,13 @@ under the License.
     <url>https://svn.apache.org/repos/asf/directory/samples/trunk/apacheds-webapp/</url>
   </scm>
 
+  <distributionManagement>
+    <site>
+      <id>apache.directory.studio</id>
+      <url>scpexe://vm094.oxylos.org/var/www/html/samples/apacheds-webapp/</url>
+    </site>
+  </distributionManagement>
+
   <build>
     <extensions>
       <extension>
@@ -59,4 +66,15 @@ under the License.
   <reporting>
     <excludeDefaults>true</excludeDefaults>
   </reporting>
+
+  <repositories>
+    <repository>
+      <id>apache.directory.snapshot.repo</id>
+      <name>Snapshot repository for the Apache Directory project</name>
+      <url>http://vm094.oxylos.org/mirror-maven2/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>
