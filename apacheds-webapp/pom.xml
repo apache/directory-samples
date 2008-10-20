@@ -34,9 +34,9 @@ under the License.
   <version>1.0-SNAPSHOT</version>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/sandbox/felixk/embed-apacheds-archetype/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/sandbox/felixk/embed-apacheds-archetype/</developerConnection>
-    <url>https://svn.apache.org/repos/asf/directory/sandbox/felixk/embed-apacheds-archetype/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/samples/trunk/apacheds-webapp/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/samples/trunk/apacheds-webapp/</developerConnection>
+    <url>https://svn.apache.org/repos/asf/directory/samples/trunk/apacheds-webapp/</url>
   </scm>
 
   <build>
