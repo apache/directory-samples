@@ -41,7 +41,7 @@ under the License.
 
   <distributionManagement>
     <site>
-      <id>apache.directory.studio</id>
+      <id>apache.directory.samples</id>
       <url>scpexe://vm094.oxylos.org/var/www/html/samples/apacheds-webapp/</url>
     </site>
   </distributionManagement>
