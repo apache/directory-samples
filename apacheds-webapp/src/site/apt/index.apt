@@ -25,10 +25,10 @@
 ~~ http://maven.apache.org/doxia/references/apt-format.html
 
 
-ApacheDS Archetype Plugin
+ApacheDS-Webapp Archetype
 
- The ApacheDS Archetype Plugin allows the user to create a webapp project
- with an embed ApacheDS.
+ The ApacheDS-Webapp Archetype generates a WebApplication (war) project skeleton
+ with an embedded ApacheDS.
 
 
 * Usage
@@ -42,12 +42,24 @@ mvn archetype:generate \
   -Dversion=1.0-SNAPSHOT \
   -DarchetypeGroupId=org.apache.directory.samples \
   -DarchetypeArtifactId=apacheds-webapp \
-  -DarchetypeVersion=1.0-SNAPSHOT
-
-or  
-
-mvn archetype:generate -DarchetypeCatalog=http://directory.apache.org
-
-Add the maven remote repository when you don't want to build the plugin yourself
+  -DarchetypeVersion=1.0-SNAPSHOT \
   -DarchetypeRepository=http://vm094.oxylos.org/mirror-maven2/
 +---
+
+  or
+  
++---
+mvn archetype:generate -DarchetypeCatalog=http://directory.apache.org -DarchetypeRepository=http://vm094.oxylos.org/mirror-maven2/
++---
+
+  \
+  Then change to the created directory (myProject by default) and run the created webapp
+
++---
+cd myProject
+mvn jetty:run
++---
+
+  and point your browser to {{http://localhost:8080/ApacheDS/RootDse}}.
+  
+  For more information see also the {{{http://cwiki.apache.org/confluence/display/DIRxSRVx11/Embedding+ApacheDS+as+a+Web+Application}wiki page}}.
