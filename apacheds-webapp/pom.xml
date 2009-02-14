@@ -53,11 +53,12 @@ under the License.
   <distributionManagement>
     <site>
       <id>apache.directory.samples</id>
-      <url>scpexe://vm094.oxylos.org/var/www/html/projects/samples/apacheds-webapp/</url>
+      <url>${distributionManagement.site.url}</url>
     </site>
   </distributionManagement>
   
   <properties>
+    <distributionManagement.site.url>scpexe://vm094.oxylos.org/var/www/html/projects/samples/apacheds-webapp/</distributionManagement.site.url>
     <skin.version>1.0.0-SNAPSHOT</skin.version>
   </properties>
 
