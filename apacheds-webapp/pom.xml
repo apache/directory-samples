@@ -56,6 +56,10 @@ under the License.
       <url>scpexe://vm094.oxylos.org/var/www/html/projects/samples/apacheds-webapp/</url>
     </site>
   </distributionManagement>
+  
+  <properties>
+    <skin.version>1.0.0-SNAPSHOT</skin.version>
+  </properties>
 
   <build>
     <extensions>

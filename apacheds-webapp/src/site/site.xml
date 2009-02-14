@@ -28,6 +28,11 @@ under the License.
   <bannerRight>
     <src>http://maven.apache.org/images/maven-logo-2.gif</src>
   </bannerRight>
+  <skin>
+    <groupId>org.apache.directory.skins</groupId>
+    <artifactId>apacheds-skin</artifactId>
+    <version>${skin.version}</version>
+  </skin>
   <publishDate format="dd MMM yyyy" position="left" />
   <version position="left" />
   <body>
