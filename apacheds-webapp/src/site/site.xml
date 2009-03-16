@@ -30,7 +30,7 @@ under the License.
   </bannerRight>
   <skin>
     <groupId>org.apache.directory.skins</groupId>
-    <artifactId>apacheds-skin</artifactId>
+    <artifactId>directory-skin</artifactId>
     <version>${skin.version}</version>
   </skin>
   <publishDate format="dd MMM yyyy" position="left" />
