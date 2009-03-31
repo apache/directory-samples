@@ -59,7 +59,7 @@ under the License.
   
   <properties>
     <distMgmtSiteUrl>scpexe://vm094.oxylos.org/var/www/html/projects/samples/apacheds-webapp/</distMgmtSiteUrl>
-    <skin.version>1.0.0-SNAPSHOT</skin.version>
+    <skin.version>1.0.0</skin.version>
   </properties>
 
   <build>
