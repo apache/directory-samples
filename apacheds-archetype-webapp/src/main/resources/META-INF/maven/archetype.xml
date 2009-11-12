@@ -18,7 +18,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 <archetype>
-  <id>apacheds-webapp</id>
+  <id>apacheds-archetype-webapp</id>
   <sources>
     <source>src/main/java/RootDseServlet.java</source>
     <source>src/main/java/StartStopListener.java</source>

@@ -19,6 +19,7 @@
  */
 package ${package};
 
+
 import java.io.File;
 
 import javax.servlet.ServletContext;
@@ -27,8 +28,9 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.directory.server.core.DefaultDirectoryService;
 import org.apache.directory.server.core.DirectoryService;
-import org.apache.directory.server.ldap.LdapService;
-import org.apache.directory.server.protocol.shared.SocketAcceptor;
+import org.apache.directory.server.ldap.LdapServer;
+import org.apache.directory.server.protocol.shared.transport.TcpTransport;
+
 
 /**
  * A Servlet context listener to start and stop ApacheDS.
@@ -36,57 +38,63 @@ import org.apache.directory.server.protocol.shared.SocketAcceptor;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory
  *         Project</a>
  */
-public class StartStopListener implements ServletContextListener {
+public class StartStopListener implements ServletContextListener
+{
 
     private DirectoryService directoryService;
 
-    private SocketAcceptor socketAcceptor;
-    private LdapService ldapService;
+    private LdapServer ldapServer;
+
 
     /**
      * Startup ApacheDS embedded.
      */
-    public void contextInitialized(ServletContextEvent evt) {
-
-        try {
+    public void contextInitialized( ServletContextEvent evt )
+    {
+        try
+        {
             directoryService = new DefaultDirectoryService();
-            directoryService.setShutdownHookEnabled(true);
+            directoryService.setShutdownHookEnabled( true );
 
-            socketAcceptor = new SocketAcceptor(null);
-            ldapService = new LdapService();
-            ldapService.setSocketAcceptor(socketAcceptor);
-            ldapService.setDirectoryService(directoryService);
+            ldapServer = new LdapServer();
+            ldapServer.setDirectoryService( directoryService );
+            ldapServer.setAllowAnonymousAccess( true );
 
             // Set LDAP port to 10389
-            ldapService.setIpPort(10389);
+            TcpTransport ldapTransport = new TcpTransport( 10389 );
+            ldapServer.setTransports( ldapTransport );
 
             // Determine an appropriate working directory
             ServletContext servletContext = evt.getServletContext();
-            File workingDir = (File) servletContext
-                    .getAttribute("javax.servlet.context.tempdir");
-            directoryService.setWorkingDirectory(workingDir);
+            File workingDir = ( File ) servletContext.getAttribute( "javax.servlet.context.tempdir" );
+            directoryService.setWorkingDirectory( workingDir );
 
             directoryService.startup();
-            ldapService.start();
+            ldapServer.start();
 
             // Store directoryService in context to provide it to servlets etc.
-            servletContext.setAttribute(DirectoryService.JNDI_KEY,
-                    directoryService);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            servletContext.setAttribute( DirectoryService.JNDI_KEY, directoryService );
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
         }
     }
+
 
     /**
      * Shutdown ApacheDS embedded.
      */
-    public void contextDestroyed(ServletContextEvent evt) {
-        try {
-            ldapService.stop();
+    public void contextDestroyed( ServletContextEvent evt )
+    {
+        try
+        {
+            ldapServer.stop();
             directoryService.shutdown();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
         }
     }
 }

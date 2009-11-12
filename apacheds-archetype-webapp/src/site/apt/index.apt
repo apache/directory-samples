@@ -33,24 +33,41 @@ ApacheDS-Webapp Archetype
 
 * Usage
 
-  Change to your preferred location to create the new project and execute following command:
+  To use the archetype you'll need to check it out and install it to your local repository:
 
 +---
-mvn archetype:generate \
-  -DgroupId=org.example \
-  -DartifactId=myProject \
-  -Dversion=1.0-SNAPSHOT \
-  -DarchetypeGroupId=org.apache.directory.samples \
-  -DarchetypeArtifactId=apacheds-webapp \
-  -DarchetypeVersion=1.0-SNAPSHOT \
-  -DarchetypeRepository=http://vm094.oxylos.org/mirror-maven2/
+svn co http://svn.apache.org/repos/asf/directory/samples/trunk/apacheds-archetype-webapp
+cd apacheds-archetype-webapp
+mvn install
 +---
 
-  or
-  
+  Then change to your preferred location to create the new project and execute following command: 
+
 +---
-mvn archetype:generate -DarchetypeCatalog=http://directory.apache.org -DarchetypeRepository=http://vm094.oxylos.org/mirror-maven2/
+mvn archetype:generate -DarchetypeGroupId=org.apache.directory.samples \
+                       -DarchetypeArtifactId=apacheds-archetype-webapp \
+                       -DarchetypeVersion=1.5.5-SNAPSHOT \
+                       -DgroupId=org.example -DartifactId=myProject -Dversion=1.0-SNAPSHOT 
 +---
+~~
+~~  Change to your preferred location to create the new project and execute following command:
+~~
+~~+---
+~~mvn archetype:generate \
+~~  -DgroupId=org.example \
+~~  -DartifactId=myProject \
+~~  -Dversion=1.0-SNAPSHOT \
+~~  -DarchetypeGroupId=org.apache.directory.samples \
+~~  -DarchetypeArtifactId=apacheds-webapp \
+~~  -DarchetypeVersion=1.0-SNAPSHOT \
+~~  -DarchetypeRepository=http://vm094.oxylos.org/mirror-maven2/
+~~+---
+~~
+~~  or
+~~  
+~~+---
+~~mvn archetype:generate -DarchetypeCatalog=http://directory.apache.org -DarchetypeRepository=http://vm094.oxylos.org/mirror-maven2/
+~~+---
 
   \
   Then change to the created directory (myProject by default) and run the created webapp
@@ -62,4 +79,4 @@ mvn jetty:run
 
   and point your browser to {{http://localhost:8080/ApacheDS/RootDse}}.
   
-  For more information see also the {{{http://cwiki.apache.org/confluence/display/DIRxSRVx11/Embedding+ApacheDS+as+a+Web+Application}wiki page}}.
+  For more information see also the {{{http://directory.apache.org/apacheds/1.5/43-embedding-apacheds-as-a-web-application.html}wiki page}}.

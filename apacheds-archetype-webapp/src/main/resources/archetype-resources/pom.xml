@@ -47,7 +47,7 @@ under the License.
       <plugin>
         <artifactId>maven-jetty-plugin</artifactId>
         <groupId>org.mortbay.jetty</groupId>
-        <version>6.1.10</version>
+        <version>6.1.21</version>
         <configuration>
           <contextPath>/ApacheDS</contextPath>
           <connectors>
@@ -63,153 +63,13 @@ under the License.
   <dependencies>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-bootstrap-extract</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-bootstrap-partition</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-core</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-core-avl</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-core-cursor</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-core-entry</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-core-jndi</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-core-shared</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-jdbm</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-jdbm-store</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-protocol-ldap</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-protocol-shared</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-schema-bootstrap</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-schema-registries</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-utils</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-xdbm-base</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-xdbm-search</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <version>3.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.4</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.14</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.mina</groupId>
-      <artifactId>mina-core</artifactId>
-      <version>1.1.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.mina</groupId>
-      <artifactId>mina-filter-ssl</artifactId>
-      <version>1.1.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-asn1</artifactId>
-      <version>0.9.12</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-asn1-codec</artifactId>
-      <version>0.9.12</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-bouncycastle-reduced</artifactId>
-      <version>0.9.12</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
-      <version>0.9.12</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-constants</artifactId>
-      <version>0.9.12</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.5.2</version>
+      <version>1.5.5</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>antlr</groupId>
-      <artifactId>antlr</artifactId>
-      <version>2.7.7</version>
+      <version>1.5.6</version>
     </dependency>
     <dependency>
       <artifactId>servlet-api</artifactId>
