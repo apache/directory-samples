@@ -1,5 +1,5 @@
 <archetype>
-  <id>apacheds-testcase-archetype</id>
+  <id>apacheds-archetype-testcase</id>
   <sources>
     <source>src/main/java/Dummy.java</source>
   </sources>
