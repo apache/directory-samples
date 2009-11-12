@@ -1,4 +1,4 @@
 #!/bin/sh
 
-mvn archetype:create -DarchetypeGroupId=org.apache.directory.server -DarchetypeArtifactId=apacheds-testcase-archetype -DarchetypeVersion=1.0.2 -DgroupId=$1 -DartifactId=$2
+mvn archetype:generate -DarchetypeGroupId=org.apache.directory.server -DarchetypeArtifactId=apacheds-testcase-archetype -DarchetypeVersion=1.5.5-SNAPSHOT -DgroupId=$1 -DartifactId=$2 -Dversion=1.0-SNAPSHOT
 

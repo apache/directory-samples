@@ -21,8 +21,8 @@ package ${groupId};
 
 
 /**
- * This class does nothing.  Makes sure maven builds and the archetype works.
+ * This class does nothing. Makes sure maven builds and the archetype works.
  */
-public class Dummy 
+public class Dummy
 {
 }

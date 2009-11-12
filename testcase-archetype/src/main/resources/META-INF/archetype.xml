@@ -4,9 +4,13 @@
     <source>src/main/java/Dummy.java</source>
   </sources>
   <testSources>
-    <source>src/test/java/ApacheDSITest.java</source>
+    <source>src/test/java/AdvancedTest.java</source>
+    <source>src/test/java/AdvancedTestApacheDsFactory.java</source>
+    <source>src/test/java/MinimalTest.java</source>
   </testSources>
   <resources>
     <resource>src/test/resources/log4j.properties</resource>
+    <resource>src/test/resources/sevenSeas_data.ldif</resource>
+    <resource>src/test/resources/sevenSeas_schema.ldif</resource>
   </resources>
 </archetype>
