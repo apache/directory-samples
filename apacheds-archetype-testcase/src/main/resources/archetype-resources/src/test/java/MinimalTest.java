@@ -21,6 +21,7 @@ package ${groupId};
 
 
 import static junit.framework.Assert.assertNotNull;
+import static org.apache.directory.server.integ.ServerIntegrationUtils.getWiredConnection;
 import static org.apache.directory.server.integ.ServerIntegrationUtils.getWiredContext;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.naming.NameNotFoundException;
@@ -41,6 +43,14 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.LdapContext;
+
+import netscape.ldap.LDAPAttribute;
+import netscape.ldap.LDAPAttributeSet;
+import netscape.ldap.LDAPConnection;
+import netscape.ldap.LDAPEntry;
+import netscape.ldap.LDAPException;
+import netscape.ldap.LDAPModification;
+import netscape.ldap.LDAPSearchResults;
 
 import org.apache.directory.server.core.CoreSession;
 import org.apache.directory.server.core.entry.DefaultServerEntry;
@@ -168,6 +178,7 @@ public class MinimalTest
         catch ( NameNotFoundException e )
         {
             // expected
+            assertTrue( e.getMessage().contains( "32" ) );
         }
 
         // create an entry
@@ -214,6 +225,78 @@ public class MinimalTest
         ctx.unbind( "uid=foo.bar,ou=users,ou=system" );
 
         ctx.close();
+    }
+
+
+    /**
+     * Demonstrates how to use the Netscape LDAP API to access the embedded
+     * ApacheDS over the wire.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void demonstrateNetscapeLdapAPI() throws Exception
+    {
+        // use the helper method to create a Connection from the LdapServer
+        LDAPConnection connection = getWiredConnection( ldapServer );
+
+        // this entry should exist
+        assertNotNull( connection.read( "ou=users,ou=system" ) );
+
+        // this entry should not exist
+        try
+        {
+            connection.read( "uid=foo.bar,ou=users,ou=system" );
+            fail( "uid=foo.bar,ou=users,ou=system doesn't exist." );
+        }
+        catch ( LDAPException e )
+        {
+            // expected
+            assertEquals( 32, e.getLDAPResultCode() );
+        }
+
+        // create an entry
+        LDAPAttributeSet newAttributes = new LDAPAttributeSet();
+        LDAPAttribute newOcAttribute = new LDAPAttribute( "objectClass" );
+        newOcAttribute.addValue( "top" );
+        newOcAttribute.addValue( "person" );
+        newOcAttribute.addValue( "organizationalPerson" );
+        newOcAttribute.addValue( "inetOrgPerson" );
+        newAttributes.add( newOcAttribute );
+        newAttributes.add( new LDAPAttribute( "uid", "foo.bar" ) );
+        newAttributes.add( new LDAPAttribute( "cn", "Foo Bar" ) );
+        newAttributes.add( new LDAPAttribute( "sn", "Bar" ) );
+        newAttributes.add( new LDAPAttribute( "givenName", "Foo" ) );
+        LDAPEntry newEntry = new LDAPEntry( "uid=foo.bar,ou=users,ou=system", newAttributes );
+        connection.add( newEntry );
+
+        // lookup entry
+        LDAPEntry entry = connection.read( "uid=foo.bar,ou=users,ou=system" );
+        assertNotNull( entry.getAttribute( "objectClass" ) );
+        assertTrue( Arrays.asList( entry.getAttribute( "objectClass" ).getStringValueArray() ).contains(
+            "inetOrgPerson" ) );
+        assertNotNull( entry.getAttribute( "cn" ) );
+        assertEquals( "Foo Bar", entry.getAttribute( "cn" ).getStringValues().nextElement() );
+
+        // modify entry
+        LDAPModification[] modificatons = new LDAPModification[3];
+        modificatons[0] = new LDAPModification( LDAPModification.ADD, new LDAPAttribute( "mail", "foo.bar@example.com" ) );
+        modificatons[1] = new LDAPModification( LDAPModification.DELETE, new LDAPAttribute( "givenName" ) );
+        modificatons[2] = new LDAPModification( LDAPModification.REPLACE, new LDAPAttribute( "description",
+            "This is Foo Bar." ) );
+        connection.modify( "uid=foo.bar,ou=users,ou=system", modificatons );
+
+        // search
+        LDAPSearchResults results = connection.search( "ou=users,ou=system", LDAPConnection.SCOPE_ONE, "(uid=foo.bar)",
+            null, true );
+        assertTrue( results.hasMoreElements() );
+        LDAPEntry result = results.next();
+        assertNotNull( result );
+        assertEquals( "uid=foo.bar,ou=users,ou=system", result.getDN() );
+        assertFalse( results.hasMoreElements() );
+
+        // delete entry
+        connection.delete( "uid=foo.bar,ou=users,ou=system" );
     }
 
 }
