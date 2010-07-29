@@ -21,16 +21,30 @@ package ${package};
 
 
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.directory.server.constants.ServerDNConstants;
 import org.apache.directory.server.core.DefaultDirectoryService;
 import org.apache.directory.server.core.DirectoryService;
+import org.apache.directory.server.core.factory.JdbmPartitionFactory;
+import org.apache.directory.server.core.partition.Partition;
+import org.apache.directory.server.core.partition.ldif.LdifPartition;
+import org.apache.directory.server.core.schema.SchemaPartition;
+import org.apache.directory.server.i18n.I18n;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.protocol.shared.transport.TcpTransport;
-
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.schema.SchemaManager;
+import org.apache.directory.shared.ldap.schema.ldif.extractor.SchemaLdifExtractor;
+import org.apache.directory.shared.ldap.schema.ldif.extractor.impl.DefaultSchemaLdifExtractor;
+import org.apache.directory.shared.ldap.schema.loader.ldif.LdifSchemaLoader;
+import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
+import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
+import org.apache.directory.server.core.factory.JdbmPartitionFactory;
 
 /**
  * A Servlet context listener to start and stop ApacheDS.
@@ -67,8 +81,14 @@ public class StartStopListener implements ServletContextListener
             // Determine an appropriate working directory
             ServletContext servletContext = evt.getServletContext();
             File workingDir = ( File ) servletContext.getAttribute( "javax.servlet.context.tempdir" );
+            workingDir = new File( workingDir, "server-work" );
+            workingDir.mkdirs();
+            
             directoryService.setWorkingDirectory( workingDir );
 
+            initSchema();
+            initSystemPartition();
+            
             directoryService.startup();
             ldapServer.start();
 
@@ -97,4 +117,77 @@ public class StartStopListener implements ServletContextListener
             throw new RuntimeException( e );
         }
     }
+    
+    
+    /**
+     * Inits the schema and schema partition.
+     */
+    private void initSchema() throws Exception
+    {
+        SchemaPartition schemaPartition = directoryService.getSchemaService().getSchemaPartition();
+
+        // Init the LdifPartition
+        LdifPartition ldifPartition = new LdifPartition();
+        String workingDirectory = directoryService.getWorkingDirectory().getPath();
+        ldifPartition.setWorkingDirectory( workingDirectory + "/schema" );
+
+        // Extract the schema on disk (a brand new one) and load the registries
+        File serverWorkDirectory = new File( workingDirectory );
+        File schemaRepository = new File( serverWorkDirectory, "schema" );
+        SchemaLdifExtractor extractor = new DefaultSchemaLdifExtractor( serverWorkDirectory );
+        if( ! schemaRepository.exists() )
+        {
+            // extract only if the schema directory is not present
+            extractor.extractOrCopy();
+        }
+        else
+        {
+            System.out.println( "schema partition directory exists, skipping schema extraction" );
+        }
+
+        schemaPartition.setWrappedPartition( ldifPartition );
+
+        SchemaLoader loader = new LdifSchemaLoader( schemaRepository );
+        SchemaManager schemaManager = new DefaultSchemaManager( loader );
+        directoryService.setSchemaManager( schemaManager );
+
+        // We have to load the schema now, otherwise we won't be able
+        // to initialize the Partitions, as we won't be able to parse 
+        // and normalize their suffix DN
+        schemaManager.loadAllEnabled();
+
+        schemaPartition.setSchemaManager( schemaManager );
+
+        List<Throwable> errors = schemaManager.getErrors();
+
+        if ( errors.size() != 0 )
+        {
+            System.out.println( errors );
+            throw new RuntimeException( "there were errors while loading schema" );
+        }
+    }
+
+    
+    /**
+     * Inits the system partition.
+     * 
+     * @throws Exception the exception
+     */
+    private void initSystemPartition() throws Exception
+    {
+        // change the working directory to something that is unique
+        // on the system and somewhere either under target directory
+        // or somewhere in a temp area of the machine.
+        JdbmPartitionFactory partitionFactory = new JdbmPartitionFactory();
+
+        // Inject the System Partition
+        Partition systemPartition = partitionFactory.createPartition( "system", ServerDNConstants.SYSTEM_DN, 500,
+            new File( directoryService.getWorkingDirectory(), "system" ) );
+        systemPartition.setSchemaManager( directoryService.getSchemaManager() );
+
+        partitionFactory.addIndex( systemPartition, SchemaConstants.OBJECT_CLASS_AT, 100 );
+
+        directoryService.setSystemPartition( systemPartition );
+    }
+
 }

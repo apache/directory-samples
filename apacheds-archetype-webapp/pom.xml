@@ -32,7 +32,7 @@ under the License.
   <packaging>maven-archetype</packaging>
   <name>ApacheDS Archetype Web Application</name>
   <description>Archetype to embed ApacheDS as a Web Application</description>
-  <version>1.5.5-SNAPSHOT</version>
+  <version>1.5.8-SNAPSHOT</version>
 
   <prerequisites>
     <maven>2.0.9</maven>
